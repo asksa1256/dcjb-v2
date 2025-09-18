@@ -57,43 +57,42 @@ const CreateQuizModal = () => {
 
   return (
     <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">문제 추가하기</Button>
+      </DialogTrigger>
 
-        <DialogTrigger asChild>
-          <Button variant="outline">문제 추가하기</Button>
-        </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>문제 추가하기</DialogTitle>
+          <DialogDescription>
+            카테고리를 선택한 후, 문제와 답을 입력해주세요.
+          </DialogDescription>
+        </DialogHeader>
 
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>문제 추가하기</DialogTitle>
-            <DialogDescription>
-              카테고리를 선택한 후, 문제와 답을 입력해주세요.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4">
-              <div className="grid gap-3">
-                <label htmlFor="category">카테고리</label>
-                <CategorySelect id="category" value={category} onChange={(v) => setCategory(v)}/>
-              </div>
-              <div className="grid gap-3">
-                <label htmlFor="question">문제</label>
-                <Textarea id="question" name="question" placeholder="문제 입력" onChange={(e) => setQuestion(e.target.value)} />
-              </div>
-              <div className="grid gap-3">
-                <label htmlFor="answer">답</label>
-                <Input id="answer" name="answer" placeholder="답 입력" onChange={(e) => setAnswer(e.target.value)} />
-              </div>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-4">
+            <div className="grid gap-3">
+              <label htmlFor="category">카테고리</label>
+              <CategorySelect id="category" value={category} onChange={(v) => setCategory(v)}/>
             </div>
+            <div className="grid gap-3">
+              <label htmlFor="question">문제</label>
+              <Textarea id="question" name="question" placeholder="문제 입력" value={question} onChange={(e) => setQuestion(e.target.value)} />
+            </div>
+            <div className="grid gap-3">
+              <label htmlFor="answer">답</label>
+              <Input id="answer" name="answer" placeholder="답 입력" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+            </div>
+          </div>
 
-            <DialogFooter className="mt-6">
-              <DialogClose asChild>
-                <Button variant="outline">취소</Button>
-              </DialogClose>
-              <Button type="submit">추가하기</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
+          <DialogFooter className="mt-6">
+            <DialogClose asChild>
+              <Button variant="outline">취소</Button>
+            </DialogClose>
+            <Button type="submit">추가하기</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }
