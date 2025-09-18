@@ -34,7 +34,7 @@ function App() {
     if (error) throw new Error(error.message);
 
     return data || [];
-  }, [])
+  }, [category])
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
