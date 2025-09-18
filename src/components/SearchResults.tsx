@@ -9,7 +9,7 @@ interface SearchResultsProps {
 
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
   return (
-    <ul className="mt-6 space-y-4">
+    <ul className="my-6 space-y-4">
       {results.map((quiz) => (
         <li
           key={quiz.id}
