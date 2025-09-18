@@ -4,12 +4,8 @@ import { Input } from "./components/ui/input";
 import CategorySelect from "./components/CategorySelect";
 import debounce from "./lib/debounce";
 import supabase from "./lib/supabase";
-
-interface Result {
-  id: number;
-  question: string;
-  answer: string;
-}
+import SearchResults from "./components/SearchResults";
+import type { Result } from "@/types/result";
 
 function App() {
   const [keyword, setKeyword] = useState("");
@@ -72,17 +68,8 @@ function App() {
         <Button onClick={clearSearch}>지우기</Button>
       </div>
 
-      {/* 검색 결과 렌더링 */}
-      <ul className="mt-4 space-y-2">
-        {results.map((quiz) => (
-          <li key={quiz.id} className="p-2 border rounded">
-            <p>Q. {quiz.question}</p>
-            <p className="mt-2">
-              A. <b className="text-blue-500">{quiz.answer}</b>
-            </p>
-          </li>
-        ))}
-      </ul>
+      {/* 검색 결과 */}
+      <SearchResults results={results} />
     </main>
   );
 }
