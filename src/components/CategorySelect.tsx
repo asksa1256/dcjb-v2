@@ -7,16 +7,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CategorySelect = () => {
+interface CategorySelectProps {
+  id?: string;
+  value?: string;
+  onChange: (v: string) => void;
+}
+
+const CategorySelect = ({id, value, onChange}: CategorySelectProps) => {
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="w-[180px]" id={id}>
         <SelectValue placeholder="퀴즈 선택" />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
+        <SelectGroup id={id}>
           <SelectItem value="ox">OX/XO</SelectItem>
-          <SelectItem value="olla">올라/꼬로록</SelectItem>
+          <SelectItem value="kkororok">꼬로록/올라</SelectItem>
           <SelectItem value="kkong">꽁꽁</SelectItem>
           <SelectItem value="garo">가로세로</SelectItem>
         </SelectGroup>

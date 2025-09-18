@@ -26,6 +26,7 @@ function App() {
     const keywords = trimmed.split(/\s+/);
 
     let query = supabase.from(`quiz_${category}`).select("*");
+
     keywords.forEach((word) => {
       query = query.ilike("question", `%${word}%`);
     });
@@ -52,7 +53,7 @@ function App() {
     isPending,
     error,
   } = useQuery<Result[], Error>({
-    queryKey: ["quiz", debouncedKeyword],
+    queryKey: ["quiz", category, debouncedKeyword],
     queryFn: () => fetchResults(debouncedKeyword),
     enabled: debouncedKeyword.trim().length > 0,
     staleTime: Infinity,
