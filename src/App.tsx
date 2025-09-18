@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, type ChangeEvent } from "react";
+import { useState, useMemo, type ChangeEvent } from "react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import CategorySelect from "./components/CategorySelect";
@@ -7,6 +7,7 @@ import supabase from "./lib/supabase";
 import SearchResults from "./components/SearchResults";
 import type { Result } from "@/types/result";
 import { useQuery } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 
 async function fetchResults(keyword: string) {
   const trimmed = keyword.trim();
@@ -60,19 +61,23 @@ function App() {
       <div className="flex flex-col gap-6 max-w-[640px]">
         <CategorySelect />
 
-        <h2>검색</h2>
-        <Input
-          onChange={handleSearch}
-          value={keyword}
-          placeholder="검색어 입력..."
-        />
-        <Button onClick={clearSearch}>지우기</Button>
+        <div className="flex gap-4 items-center">
+          <Input
+            value={keyword}
+            placeholder="검색어 입력..."
+            className="md:text-lg md:px-4 md:py-6"
+            onChange={handleSearch}
+          />
+          <Button onClick={clearSearch}>지우기</Button>
+        </div>
       </div>
 
       {/* 검색 결과 */}
       {debouncedKeyword && isPending && <p>검색 중...</p>}
       {error && <p className="text-red-500">검색 오류: {error.message}</p>}
       <SearchResults results={results} keyword={keyword} />
+
+      <Toaster position="bottom-center" richColors />
     </main>
   );
 }

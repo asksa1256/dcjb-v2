@@ -1,5 +1,6 @@
 import type { Result } from "@/types/result";
 import { highlightWords } from "@/lib/highlightWords";
+import { copyToClipboard } from "@/lib/copyToClipborad";
 
 interface SearchResultsProps {
   results: Result[];
@@ -12,6 +13,12 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
       {results.map((quiz) => (
         <li
           key={quiz.id}
+          role="button"
+          tabIndex={0}
+          onClick={() => copyToClipboard(quiz.answer)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") copyToClipboard(quiz.answer);
+          }}
           className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
           <p className="text-md font-medium text-gray-500">Q.</p>
