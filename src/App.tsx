@@ -6,53 +6,54 @@ import debounce from "./lib/debounce";
 import supabase from "./lib/supabase";
 import SearchResults from "./components/SearchResults";
 import type { Result } from "@/types/result";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchResults(keyword: string) {
+  const trimmed = keyword.trim();
+  if (!trimmed) return [];
+
+  const keywords = trimmed.split(/\s+/);
+
+  let query = supabase.from("quiz_kkong").select("*");
+  keywords.forEach((word) => {
+    query = query.ilike("question", `%${word}%`);
+  });
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+
+  return data || [];
+}
 
 function App() {
   const [keyword, setKeyword] = useState("");
-  const [results, setResults] = useState<Result[]>([]);
-
-  const fetchResults = useCallback(async (v: string) => {
-    const trimmed = v.trim();
-    if (!trimmed) {
-      setResults([]);
-      return;
-    }
-
-    // 공백 기준 키워드 분리
-    const keywords = trimmed.split(/\s+/);
-
-    // Supabase 조회
-    let query = supabase.from("quiz_kkong").select("*");
-
-    // 분리된 각 단어에 대해 ilike 'AND' 조건 추가
-    keywords.forEach((word) => {
-      query = query.ilike("question", `%${word}%`);
-    });
-
-    const { data, error } = await query;
-    if (error) {
-      alert(`검색 오류: ${error.message}`);
-      return;
-    }
-
-    setResults(data || []);
-  }, []);
-
-  const debouncedFetch = useMemo(
-    () => debounce(fetchResults, 500),
-    [fetchResults]
+  const [debouncedKeyword, setDebouncedKeyword] = useState("");
+  const debouncedSetKeyword = useMemo(
+    () => debounce((v: string) => setDebouncedKeyword(v), 500),
+    []
   );
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setKeyword(value);
-    debouncedFetch(value);
+    debouncedSetKeyword(value);
   };
 
   const clearSearch = () => {
     setKeyword("");
-    setResults([]);
+    setDebouncedKeyword("");
   };
+
+  const {
+    data: results = [],
+    isPending,
+    error,
+  } = useQuery<Result[], Error>({
+    queryKey: ["quiz", debouncedKeyword],
+    queryFn: () => fetchResults(debouncedKeyword),
+    enabled: debouncedKeyword.trim().length > 0,
+    staleTime: Infinity,
+  });
 
   return (
     <main className="flex min-h-svh flex-col items-center justify-center">
@@ -69,6 +70,8 @@ function App() {
       </div>
 
       {/* 검색 결과 */}
+      {debouncedKeyword && isPending && <p>검색 중...</p>}
+      {error && <p className="text-red-500">검색 오류: {error.message}</p>}
       <SearchResults results={results} keyword={keyword} />
     </main>
   );
