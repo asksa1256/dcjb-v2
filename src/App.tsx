@@ -69,7 +69,7 @@ function App() {
       </div>
 
       {/* 검색 결과 */}
-      <SearchResults results={results} />
+      <SearchResults results={results} keyword={keyword} />
     </main>
   );
 }
