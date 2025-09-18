@@ -120,4 +120,7 @@
   body {
     @apply font-pretendard;
   }
+  button {
+    @apply cursor-pointer
+  }
 }
