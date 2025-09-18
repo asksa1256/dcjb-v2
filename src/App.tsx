@@ -1,4 +1,4 @@
-import { useState, useMemo, type ChangeEvent } from "react";
+import { useState, useMemo, useCallback, type ChangeEvent } from "react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import CategorySelect from "./components/CategorySelect";
@@ -15,27 +15,35 @@ function App() {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<Result[]>([]);
 
-  const fetchResults = async (v: string) => {
-    if (!v.trim()) {
+  const fetchResults = useCallback(async (v: string) => {
+    const trimmed = v.trim();
+    if (!trimmed) {
       setResults([]);
       return;
     }
 
-    const { data, error } = await supabase
-      .from("quiz_kkong")
-      .select("*")
-      .ilike("question", `%${v}%`); // 부분 검색
+    // 공백 기준 키워드 분리
+    const keywords = trimmed.split(/\s+/);
 
+    // Supabase 조회
+    let query = supabase.from("quiz_kkong").select("*");
+
+    // 분리된 각 단어에 대해 ilike 'AND' 조건 추가
+    keywords.forEach((word) => {
+      query = query.ilike("question", `%${word}%`);
+    });
+
+    const { data, error } = await query;
     if (error) {
-      console.error("검색 오류:", error.message);
+      alert(`검색 오류: ${error.message}`);
       return;
     }
 
     setResults(data || []);
-  };
+  }, []);
 
   const debouncedFetch = useMemo(
-    () => debounce(fetchResults, 300),
+    () => debounce(fetchResults, 500),
     [fetchResults]
   );
 
