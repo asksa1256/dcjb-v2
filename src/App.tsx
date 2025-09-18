@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, type ChangeEvent } from "react";
+import { useState, useMemo, useCallback, useRef, type ChangeEvent } from "react";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import CategorySelect from "./components/CategorySelect";
@@ -18,6 +18,7 @@ function App() {
     []
   );
   const [category, setCategory] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchResults = useCallback( async (keyword: string) => {
     const trimmed = keyword.trim();
@@ -46,6 +47,9 @@ function App() {
   const clearSearch = () => {
     setKeyword("");
     setDebouncedKeyword("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const {
@@ -66,6 +70,7 @@ function App() {
 
         <div className="flex gap-4 items-center">
           <Input
+            ref={inputRef}
             value={keyword}
             placeholder="검색어 입력..."
             className="md:text-lg md:px-4 md:py-6"
