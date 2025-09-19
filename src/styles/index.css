@@ -121,6 +121,10 @@
     @apply font-pretendard;
   }
   button {
-    @apply cursor-pointer
+    @apply cursor-pointer;
   }
+}
+
+[data-sonner-toast] {
+  font-size: 16px !important;
 }
