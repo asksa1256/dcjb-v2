@@ -59,6 +59,11 @@ const SearchContainer = () => {
     }
   };
 
+  const handleChangeCategory = (v: string) => {
+    setCategory(v);
+    clearSearch();
+  };
+
   const {
     data: results = [],
     isPending,
@@ -81,7 +86,7 @@ const SearchContainer = () => {
           id="category"
           value={category}
           className="mb-6"
-          onChange={(v) => setCategory(v)}
+          onChange={handleChangeCategory}
         />
 
         <div className="flex gap-4 items-center">
