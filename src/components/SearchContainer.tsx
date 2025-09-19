@@ -72,14 +72,15 @@ const SearchContainer = () => {
 
   const isCategoryEmpty = category === "" && keyword.length > 0;
   const isSearching = category && debouncedKeyword && isPending;
-  const isEmpty = category && debouncedKeyword && results.length === 0;
+  const isEmpty = !isPending && !error && results.length === 0;
 
   return (
-    <section className="relative flex flex-col justify-center max-w-[640px]">
-      <div className="flex flex-col gap-6">
+    <section className="relative flex flex-col justify-center w-full max-w-[640px]">
+      <div className="flex flex-col max-w-[320px] self-center">
         <CategorySelect
           id="category"
           value={category}
+          className="mb-6"
           onChange={(v) => setCategory(v)}
         />
 
@@ -92,18 +93,18 @@ const SearchContainer = () => {
           />
           <Button onClick={clearSearch}>지우기</Button>
         </div>
+
+        <div className="mt-3 ml-3 text-sm">
+          {isCategoryEmpty && (
+            <p className="text-red-500">카테고리를 선택해주세요.</p>
+          )}
+          {isSearching && <p className="text-blue-500">검색 중...</p>}
+          {isEmpty && <p className="text-gray-500">검색 결과가 없습니다.</p>}
+          {error && <p className="text-red-500">검색 오류: {error.message}</p>}
+        </div>
       </div>
 
       {/* 검색 결과 */}
-      <div className="mt-2 ml-3 text-sm">
-        {isCategoryEmpty && (
-          <p className="text-red-500">카테고리를 선택해주세요.</p>
-        )}
-        {isSearching && <p className="text-blue-500">검색 중...</p>}
-        {isEmpty && <p className="text-gray-500">검색 결과가 없습니다.</p>}
-        {error && <p className="text-red-500">검색 오류: {error.message}</p>}
-      </div>
-
       <SearchResults results={results} keyword={keyword} />
     </section>
   );

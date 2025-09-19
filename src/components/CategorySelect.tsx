@@ -10,13 +10,19 @@ import {
 interface CategorySelectProps {
   id?: string;
   value?: string;
+  className?: string;
   onChange: (v: string) => void;
 }
 
-const CategorySelect = ({id, value, onChange}: CategorySelectProps) => {
+const CategorySelect = ({
+  id,
+  value,
+  className,
+  onChange,
+}: CategorySelectProps) => {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-[180px]" id={id}>
+      <SelectTrigger className={`w-[180px] ${className}`} id={id}>
         <SelectValue placeholder="퀴즈 선택" />
       </SelectTrigger>
       <SelectContent>

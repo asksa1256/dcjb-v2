@@ -4,7 +4,7 @@ import SearchContainer from "./components/SearchContainer";
 
 function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-10">
+    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-10 bg-gray-50">
       <SearchContainer />
       <Toaster position="bottom-center" richColors />
       <CreateQuizModal />
