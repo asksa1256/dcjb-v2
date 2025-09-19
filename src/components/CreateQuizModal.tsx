@@ -18,41 +18,38 @@ import { toast } from "sonner";
 import supabase from "@/lib/supabase";
 
 const CreateQuizModal = () => {
-  const queryClient = useQueryClient();
-
   const [category, setCategory] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+    setIsSubmitting(true);
 
-    if (!category || !question || !answer) {
-      toast.error("모든 항목을 입력해주세요.");
-      return;
-    }
+    try {
+      const tableName = `quiz_${category}`;
 
-    const tableName = `quiz_${category}`;
+      const { error } = await supabase
+        .from(tableName)
+        .insert([{ question, answer }]);
 
-    const { data, error } = await supabase
-      .from(tableName)
-      .insert([{ question, answer }]);
-    console.log(data);
+      if (error) throw error;
 
-    if (error) {
+      toast.success("문제가 성공적으로 추가되었습니다!");
+
+      // React Query 캐시 갱신
+      queryClient.invalidateQueries({ queryKey: ["quiz", category] });
+
+      setCategory("");
+      setQuestion("");
+      setAnswer("");
+    } catch (error: any) {
       toast.error(`문제 추가 실패: ${error.message}`);
       console.error(error);
-      return;
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toast.success("문제가 성공적으로 추가되었습니다!");
-
-    // React Query 캐시 갱신
-    queryClient.invalidateQueries({ queryKey: ["quiz", category] });
-
-    setCategory("");
-    setQuestion("");
-    setAnswer("");
   };
 
   return (
@@ -113,7 +110,9 @@ const CreateQuizModal = () => {
             <DialogClose asChild>
               <Button variant="outline">닫기</Button>
             </DialogClose>
-            <Button type="submit">추가하기</Button>
+            <Button type="submit">
+              {isSubmitting ? "추가 중..." : "추가하기"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
