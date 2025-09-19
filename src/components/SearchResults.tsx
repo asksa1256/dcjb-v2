@@ -9,7 +9,7 @@ interface SearchResultsProps {
 
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
   return (
-    <ul className="my-6 space-y-4">
+    <ul className="mt-4 mb-6 space-y-4">
       {results.map((quiz) => (
         <li
           key={quiz.id}
@@ -21,12 +21,12 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           }}
           className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
-          <p className="text-md font-medium text-gray-500">Q.</p>
+          <p className="text-md font-medium text-gray-400">Q.</p>
           <p className="mt-1 text-lg text-gray-800">
             {highlightWords(quiz.question, keyword)}
           </p>
           <div className="mt-3 flex items-center gap-2">
-            <span className="text-md font-medium text-gray-500">A.</span>
+            <span className="text-md font-medium text-gray-400">A.</span>
             <b className="rounded text-lg bg-blue-50 px-2 py-1 text-blue-600">
               {quiz.answer}
             </b>
