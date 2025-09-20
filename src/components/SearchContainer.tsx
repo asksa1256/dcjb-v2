@@ -111,6 +111,7 @@ const SearchContainer = () => {
 
       {/* 검색 결과 */}
       <SearchResults results={results} keyword={keyword} />
+      {results.length > 0 && <p className="my-4 text-center text-xs text-gray-400">검색 결과를 모두 불러왔습니다.</p>}
     </section>
   );
 };
