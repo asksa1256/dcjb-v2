@@ -25,6 +25,7 @@ const CreateQuizModal = () => {
   const queryClient = useQueryClient();
 
   const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
 
     try {
@@ -44,8 +45,12 @@ const CreateQuizModal = () => {
       setCategory("");
       setQuestion("");
       setAnswer("");
-    } catch (error: any) {
-      toast.error(`문제 추가 실패: ${error.message}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(`문제 추가 실패: ${error.message}`);
+      } else {
+        toast.error("알 수 없는 오류가 발생했습니다.");
+      }
       console.error(error);
     } finally {
       setIsSubmitting(false);
