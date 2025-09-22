@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CATEGORY } from "@/constants";
 
 interface CategorySelectProps {
   id?: string;
@@ -27,10 +28,10 @@ const CategorySelect = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup id={id}>
-          <SelectItem value="ox">OX/XO</SelectItem>
-          <SelectItem value="kkororok">꼬로록/올라</SelectItem>
-          <SelectItem value="kkong">꽁꽁</SelectItem>
-          <SelectItem value="garo">가로세로</SelectItem>
+          <SelectItem value={CATEGORY.OX}>OX/XO</SelectItem>
+          <SelectItem value={CATEGORY.KKOROROK}>꼬로록/올라</SelectItem>
+          <SelectItem value={CATEGORY.KKONG}>꽁꽁</SelectItem>
+          <SelectItem value={CATEGORY.GARO}>가로세로</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

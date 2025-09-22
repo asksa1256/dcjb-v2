@@ -14,6 +14,7 @@ import SearchResults from "@/components/SearchResults";
 import type { Result } from "@/types/result";
 import { useQuery } from "@tanstack/react-query";
 import { normalize } from "@/lib/normalize";
+import { CATEGORY } from "@/constants";
 
 const SearchContainer = () => {
   const [keyword, setKeyword] = useState("");
@@ -35,7 +36,7 @@ const SearchContainer = () => {
 
       let query;
 
-      if (category === "garo") {
+      if (category === CATEGORY.GARO) {
         query = supabase.from(`quiz_${category}`).select("*");
       } else {
         query = supabase
