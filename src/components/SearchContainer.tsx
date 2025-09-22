@@ -33,27 +33,13 @@ const SearchContainer = () => {
 
       const keywords = trimmed.split(/\s+/);
 
-      let query = supabase
-        .from(
-          category === CATEGORY.GARO
-            ? `quiz_${category}`
-            : `quiz_${category}_normalized`
-        )
-        .select("*");
+      let query = supabase.from(`quiz_${category}`).select("*");
 
-      if (category === CATEGORY.GARO) {
-        keywords.forEach((word) => {
-          query = query.ilike("question", `%${word}%`);
-        });
-      } else {
-        keywords.forEach((word) => {
-          console.log(word);
-          query = query.ilike("question_plain", `%${word}%`);
-        });
-      }
+      keywords.forEach((word) => {
+        query = query.ilike("question", `%${word}%`);
+      });
 
       const { data, error } = await query;
-
       if (error) throw new Error(error.message);
 
       return data || [];
