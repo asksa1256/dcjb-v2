@@ -13,8 +13,6 @@ import supabase from "@/lib/supabase";
 import SearchResults from "@/components/SearchResults";
 import type { Result } from "@/types/result";
 import { useQuery } from "@tanstack/react-query";
-import { normalize } from "@/lib/normalize";
-import { CATEGORY } from "@/constants";
 
 const SearchContainer = () => {
   const [keyword, setKeyword] = useState("");
