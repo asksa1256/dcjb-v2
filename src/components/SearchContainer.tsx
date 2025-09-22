@@ -13,6 +13,7 @@ import supabase from "@/lib/supabase";
 import SearchResults from "@/components/SearchResults";
 import type { Result } from "@/types/result";
 import { useQuery } from "@tanstack/react-query";
+import { normalize } from "@/lib/normalize";
 
 const SearchContainer = () => {
   const [keyword, setKeyword] = useState("");
@@ -30,14 +31,21 @@ const SearchContainer = () => {
       if (!trimmed) return [];
 
       const keywords = trimmed.split(/\s+/);
+      const normalized = keywords.map((w) => normalize(w));
 
-      let query = supabase.from(`quiz_${category}`).select("*");
+      let query;
 
-      keywords.forEach((word) => {
-        query = query.ilike("question", `%${word}%`);
-      });
+      if (category === "garo") {
+        query = supabase.from(`quiz_${category}`).select("*");
+      } else {
+        query = supabase
+          .from(`quiz_${category}_normalized`)
+          .select("*")
+          .ilike("question_plain", `%${normalized}%`);
+      }
 
       const { data, error } = await query;
+
       if (error) throw new Error(error.message);
 
       return data || [];
@@ -111,7 +119,11 @@ const SearchContainer = () => {
 
       {/* 검색 결과 */}
       <SearchResults results={results} keyword={keyword} />
-      {results.length > 0 && <p className="my-4 text-center text-xs text-gray-400">검색 결과를 모두 불러왔습니다.</p>}
+      {results.length > 0 && (
+        <p className="my-4 text-center text-xs text-gray-400">
+          검색 결과를 모두 불러왔습니다.
+        </p>
+      )}
     </section>
   );
 };
