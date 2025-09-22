@@ -32,17 +32,24 @@ const SearchContainer = () => {
       if (!trimmed) return [];
 
       const keywords = trimmed.split(/\s+/);
-      const normalized = keywords.map((w) => normalize(w));
 
-      let query;
+      let query = supabase
+        .from(
+          category === CATEGORY.GARO
+            ? `quiz_${category}`
+            : `quiz_${category}_normalized`
+        )
+        .select("*");
 
       if (category === CATEGORY.GARO) {
-        query = supabase.from(`quiz_${category}`).select("*");
+        keywords.forEach((word) => {
+          query = query.ilike("question", `%${word}%`);
+        });
       } else {
-        query = supabase
-          .from(`quiz_${category}_normalized`)
-          .select("*")
-          .ilike("question_plain", `%${normalized}%`);
+        keywords.forEach((word) => {
+          console.log(word);
+          query = query.ilike("question_plain", `%${word}%`);
+        });
       }
 
       const { data, error } = await query;
