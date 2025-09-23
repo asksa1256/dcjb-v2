@@ -87,7 +87,7 @@ const SearchContainer = () => {
         <CategorySelect
           id="category"
           value={category}
-          className="mb-6"
+          className="mb-6 w-full"
           onChange={handleChangeCategory}
         />
 
