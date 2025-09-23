@@ -10,9 +10,9 @@ interface SearchResultsProps {
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
   return (
     <ul className="mt-4 space-y-4">
-      {results.map((quiz) => (
+      {results.map((quiz, i) => (
         <li
-          key={quiz.id}
+          key={quiz.id ?? `${quiz.answer}-${i}`}
           role="button"
           tabIndex={0}
           onClick={() => copyToClipboard(quiz.answer)}
