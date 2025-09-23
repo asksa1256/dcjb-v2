@@ -29,7 +29,9 @@ const SearchContainer = () => {
       const trimmed = keyword.trim();
       if (!trimmed) return [];
 
-      const keywords = trimmed.split(/\s+/);
+      const escapedKeyword = trimmed.replace(/%/g, "\\%").replace(/_/g, "\\_");
+
+      const keywords = escapedKeyword.split(/\s+/);
 
       let query = supabase.from(`quiz_${category}`).select("*");
 
