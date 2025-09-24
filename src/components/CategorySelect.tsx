@@ -6,13 +6,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CATEGORY } from "@/constants";
+import type { Category } from "@/types";
 
 interface CategorySelectProps {
   id?: string;
   value?: string;
   className?: string;
-  onChange: (v: string) => void;
+  onChange: (v: Category) => void;
 }
 
 const CategorySelect = ({
@@ -28,10 +28,10 @@ const CategorySelect = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup id={id}>
-          <SelectItem value={CATEGORY.OX}>OX/XO</SelectItem>
-          <SelectItem value={CATEGORY.KKOROROK}>꼬로록/올라</SelectItem>
-          <SelectItem value={CATEGORY.KKONG}>꽁꽁</SelectItem>
-          <SelectItem value={CATEGORY.GARO}>가로세로</SelectItem>
+          <SelectItem value="quiz_ox">OX/XO</SelectItem>
+          <SelectItem value="quiz_kkororok">꼬로록/올라</SelectItem>
+          <SelectItem value="quiz_kkong">꽁꽁</SelectItem>
+          <SelectItem value="quiz_garo">가로세로</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

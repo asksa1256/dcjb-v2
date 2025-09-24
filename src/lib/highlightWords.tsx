@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { escapeRegExp } from "@/lib/escapeRegExp";
 
 export const highlightWords = (
   question: string,
@@ -6,10 +7,11 @@ export const highlightWords = (
 ): ReactNode[] => {
   if (!keyword.trim()) return [question];
 
-  const escapeRegExp = (str: string) =>
-    str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-  const words = keyword.trim().split(/\s+/).map(escapeRegExp);
+  // 공백 기준 키워드 분리
+  const words = keyword
+    .trim()
+    .split(/\s+/)
+    .map((word) => escapeRegExp(word));
 
   // 각 단어마다 정규식 생성 (대소문자 무시)
   const regex = new RegExp(`(${words.join("|")})`, "gi");

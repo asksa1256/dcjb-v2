@@ -11,8 +11,11 @@ import CategorySelect from "@/components/CategorySelect";
 import debounce from "@/lib/debounce";
 import supabase from "@/lib/supabase";
 import SearchResults from "@/components/SearchResults";
-import type { Result } from "@/types/result";
+import type { Database } from "@/types/supabase";
+import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+
+type TableNames = keyof Database["public"]["Tables"];
 
 const SearchContainer = () => {
   const [keyword, setKeyword] = useState("");
@@ -21,31 +24,40 @@ const SearchContainer = () => {
     () => debounce((v: string) => setDebouncedKeyword(v), 500),
     []
   );
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<Category>("quiz_ox");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [loadingPercent, setLoadingPercent] = useState(0);
 
-  const fetchResults = useCallback(
-    async (keyword: string) => {
-      const trimmed = keyword.trim();
-      if (!trimmed) return [];
+  const fetchResults = useCallback(async (ctg: TableNames) => {
+    const { count } = await supabase
+      .from(ctg)
+      .select("*", { count: "exact", head: true });
 
-      const escapedKeyword = trimmed.replace(/%/g, "\\%").replace(/_/g, "\\_");
+    const totalCount = count || 0;
+    const batchSize = 1000;
 
-      const keywords = escapedKeyword.split(/\s+/);
+    type RecordType = Database["public"]["Tables"][typeof ctg]["Row"];
+    let allData: RecordType[] = [];
 
-      let query = supabase.from(`quiz_${category}`).select("*");
+    for (let i = 0; i < totalCount; i += batchSize) {
+      const { data, error } = await supabase
+        .from(ctg)
+        .select("*")
+        .range(i, i + batchSize - 1);
 
-      keywords.forEach((word) => {
-        query = query.ilike("question", `%${word}%`);
-      });
+      if (error) {
+        console.error("Error fetching data:", error);
+        break;
+      }
 
-      const { data, error } = await query;
-      if (error) throw new Error(error.message);
+      allData = allData.concat(data);
 
-      return data || [];
-    },
-    [category]
-  );
+      console.log(`현재까지 가져온 데이터 수: ${allData.length}`);
+      setLoadingPercent(Math.floor((allData.length / totalCount) * 100));
+    }
+
+    return allData;
+  }, []);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -61,7 +73,7 @@ const SearchContainer = () => {
     }
   };
 
-  const handleChangeCategory = (v: string) => {
+  const handleChangeCategory = (v: Category) => {
     setCategory(v);
     clearSearch();
   };
@@ -70,16 +82,30 @@ const SearchContainer = () => {
     data: results = [],
     isPending,
     error,
-  } = useQuery<Result[], Error>({
-    queryKey: ["quiz", category, debouncedKeyword],
-    queryFn: () => fetchResults(debouncedKeyword),
-    enabled: debouncedKeyword.trim().length > 0,
+  } = useQuery({
+    queryKey: ["quiz", category],
+    queryFn: () => fetchResults(category),
     staleTime: Infinity,
   });
 
-  const isCategoryEmpty = category === "" && keyword.length > 0;
+  const filteredResults = useMemo(() => {
+    const trimmedKeyword = debouncedKeyword.trim();
+
+    if (trimmedKeyword.length === 0) {
+      return [];
+    }
+
+    const keywords = trimmedKeyword.toLowerCase().split(/\s+/).filter(Boolean);
+
+    return results.filter((item) => {
+      const fullText = `${item.question?.toLowerCase()}`;
+
+      return keywords.every((keyword) => fullText.includes(keyword));
+    });
+  }, [results, debouncedKeyword]);
+
   const isSearching = category && debouncedKeyword && isPending;
-  const isEmpty = !isPending && !error && results.length === 0;
+  const isEmpty = results.length === 0;
 
   return (
     <section className="relative flex flex-col justify-center w-full max-w-[640px]">
@@ -90,6 +116,8 @@ const SearchContainer = () => {
           className="mb-6 w-full"
           onChange={handleChangeCategory}
         />
+
+        {loadingPercent < 100 && <p>{loadingPercent}%</p>}
 
         <div className="flex gap-4 items-center">
           <Input
@@ -102,9 +130,6 @@ const SearchContainer = () => {
         </div>
 
         <div className="mt-3 ml-3 text-sm">
-          {isCategoryEmpty && (
-            <p className="text-red-500">카테고리를 선택해주세요.</p>
-          )}
           {isSearching && <p className="text-blue-500">검색 중...</p>}
           {isEmpty && <p className="text-gray-500">검색 결과가 없습니다.</p>}
           {error && <p className="text-red-500">검색 오류: {error.message}</p>}
@@ -112,7 +137,7 @@ const SearchContainer = () => {
       </div>
 
       {/* 검색 결과 */}
-      <SearchResults results={results} keyword={keyword} />
+      <SearchResults results={filteredResults} keyword={keyword} />
       {results.length > 0 && (
         <p className="my-4 text-center text-xs text-gray-400">
           검색 결과를 모두 불러왔습니다.

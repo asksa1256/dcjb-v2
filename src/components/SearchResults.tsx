@@ -1,9 +1,9 @@
-import type { Result } from "@/types/result";
+import type { Records } from "@/types";
 import { highlightWords } from "@/lib/highlightWords";
 import { copyToClipboard } from "@/lib/copyToClipborad";
 
 interface SearchResultsProps {
-  results: Result[];
+  results: Records;
   keyword: string;
 }
 
@@ -12,18 +12,18 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
     <ul className="mt-4 space-y-4">
       {results.map((quiz, i) => (
         <li
-          key={quiz.id ?? `${quiz.answer}-${i}`}
+          key={`${quiz.answer}-${i}`}
           role="button"
           tabIndex={0}
-          onClick={() => copyToClipboard(quiz.answer)}
+          onClick={() => copyToClipboard(quiz.answer || "")}
           onKeyDown={(e) => {
-            if (e.key === "Enter") copyToClipboard(quiz.answer);
+            if (e.key === "Enter") copyToClipboard(quiz.answer || "");
           }}
           className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
           <p className="text-md font-medium text-gray-500">Q.</p>
           <p className="mt-1 text-lg text-gray-800">
-            {highlightWords(quiz.question, keyword)}
+            {highlightWords(quiz.question || "", keyword)}
           </p>
           <div className="mt-3 flex items-center gap-2">
             <span className="text-md font-medium text-gray-500">A.</span>
