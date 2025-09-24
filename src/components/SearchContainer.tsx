@@ -24,7 +24,7 @@ const SearchContainer = () => {
     () => debounce((v: string) => setDebouncedKeyword(v), 500),
     []
   );
-  const [category, setCategory] = useState<Category>("quiz_ox");
+  const [category, setCategory] = useState<Category | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingPercent, setLoadingPercent] = useState(0);
 
@@ -84,8 +84,9 @@ const SearchContainer = () => {
     error,
   } = useQuery({
     queryKey: ["quiz", category],
-    queryFn: () => fetchResults(category),
+    queryFn: () => fetchResults(category as TableNames),
     staleTime: Infinity,
+    enabled: !!category,
   });
 
   const filteredResults = useMemo(() => {
@@ -105,19 +106,23 @@ const SearchContainer = () => {
   }, [results, debouncedKeyword]);
 
   const isSearching = category && debouncedKeyword && isPending;
-  const isEmpty = results.length === 0;
+  const isEmpty = debouncedKeyword.length > 0 && results.length === 0;
 
   return (
     <section className="relative flex flex-col justify-center w-full max-w-[640px]">
       <div className="flex flex-col max-w-[320px] self-center">
         <CategorySelect
           id="category"
-          value={category}
+          value={category || ""}
           className="mb-6 w-full"
           onChange={handleChangeCategory}
         />
 
-        {loadingPercent < 100 && <p>{loadingPercent}%</p>}
+        {category && loadingPercent < 100 && (
+          <p className="text-xs text-gray-400 mb-4">
+            데이터 불러오는 중... {loadingPercent}%
+          </p>
+        )}
 
         <div className="flex gap-4 items-center">
           <Input
@@ -138,7 +143,7 @@ const SearchContainer = () => {
 
       {/* 검색 결과 */}
       <SearchResults results={filteredResults} keyword={keyword} />
-      {results.length > 0 && (
+      {debouncedKeyword.length > 0 && results.length > 0 && (
         <p className="my-4 text-center text-xs text-gray-400">
           검색 결과를 모두 불러왔습니다.
         </p>
