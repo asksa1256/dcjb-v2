@@ -29,7 +29,7 @@ const CreateQuizModal = () => {
     setIsSubmitting(true);
 
     try {
-      const tableName = `quiz_${category}`;
+      const tableName = `${category}`;
 
       const { error } = await supabase
         .from(tableName)
