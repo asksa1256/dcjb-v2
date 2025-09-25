@@ -108,7 +108,7 @@ const SearchContainer = () => {
   const isEmpty = debouncedKeyword.length > 0 && results.length === 0;
 
   return (
-    <section className="relative w-full">
+    <section className="relative flex flex-col items-center w-full">
       <div className="flex flex-col max-w-[320px] self-center">
         <CategorySelect
           id="category"

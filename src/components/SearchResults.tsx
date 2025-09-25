@@ -29,7 +29,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           </h6>
 
           <div className="mt-3 flex items-center justify-between gap-2">
-            <h6>
+            <h6 className="shrink-0">
               <span className="text-md font-medium text-gray-500 mr-2">A.</span>
               <b className="rounded text-lg bg-blue-50 px-2 py-1 text-blue-600">
                 {quiz.answer}
@@ -37,11 +37,12 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
             </h6>
 
             {quiz.nickname && (
-              <span className="text-gray-300 text-xs">
-                Thanks to
-                <b className="ml-2 text-gray-400 text-sm">
-                  ✨{quiz.nickname}✨
+              <span className="inline-flex items-center text-gray-300 text-xs">
+                Thanks to ✨
+                <b className="max-w-[120px] overflow-ellipsis overflow-hidden whitespace-nowrap text-gray-400 text-sm">
+                  {quiz.nickname}
                 </b>
+                ✨
               </span>
             )}
           </div>
