@@ -39,15 +39,18 @@ const CreateInquiryModal = () => {
         {
           inquiry: sanitize(inquiry),
           contact: sanitize(contact),
+          nickname: sanitize(nickname),
           created_at: createdAt,
         },
       ]);
 
       if (error) throw error;
 
-      toast.success("");
+      toast.success("문의가 등록되었습니다.");
 
       setInquiry("");
+      setContact("");
+      setNickname("");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(`문제 추가 실패: ${error.message}`);
