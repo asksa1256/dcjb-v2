@@ -17,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import supabase from "@/lib/supabase";
 import { sanitize } from "@/lib/sanitize";
+import { Plus } from "lucide-react";
 
 const CreateQuizModal = () => {
   const [category, setCategory] = useState("");
@@ -76,6 +77,7 @@ const CreateQuizModal = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="w-auto mx-auto">
+          <Plus className="-mr-1" />
           문제 추가하기
         </Button>
       </DialogTrigger>

@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import supabase from "@/lib/supabase";
 import { sanitize } from "@/lib/sanitize";
 import { Input } from "@/components/ui/input";
+import { BadgeQuestionMark } from "lucide-react";
 
 const CreateInquiryModal = () => {
   const [contact, setContact] = useState("");
@@ -63,7 +64,7 @@ const CreateInquiryModal = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="w-auto mx-auto">
-          문의하기
+          <BadgeQuestionMark className="-mr-0.5" /> 문의하기
         </Button>
       </DialogTrigger>
 

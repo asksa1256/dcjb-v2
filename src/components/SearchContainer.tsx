@@ -109,7 +109,7 @@ const SearchContainer = () => {
   const isEmpty = debouncedKeyword.length > 0 && results.length === 0;
 
   return (
-    <section className="relative flex flex-col justify-center w-full max-w-[640px]">
+    <section className="relative w-full">
       <div className="flex flex-col max-w-[320px] self-center">
         <CategorySelect
           id="category"
@@ -118,20 +118,22 @@ const SearchContainer = () => {
           onChange={handleChangeCategory}
         />
 
-        {category && loadingPercent < 100 && (
-          <p className="text-xs text-gray-400 mb-4">
-            데이터 불러오는 중... {loadingPercent}%
-          </p>
-        )}
+        <div className="flex flex-col gap-4 items-center">
+          <div className="flex gap-4">
+            <Input
+              ref={inputRef}
+              value={keyword}
+              placeholder="검색어 입력..."
+              onChange={handleSearch}
+            />
+            <Button onClick={clearSearch}>지우기</Button>
+          </div>
 
-        <div className="flex gap-4 items-center">
-          <Input
-            ref={inputRef}
-            value={keyword}
-            placeholder="검색어 입력..."
-            onChange={handleSearch}
-          />
-          <Button onClick={clearSearch}>지우기</Button>
+          {category && loadingPercent < 100 && (
+            <p className="text-xs text-gray-400">
+              문제 불러오는 중... {loadingPercent}%
+            </p>
+          )}
         </div>
 
         <div className="mt-3 ml-3 text-sm">
