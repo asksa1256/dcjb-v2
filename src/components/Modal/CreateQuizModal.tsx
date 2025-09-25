@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "./ui/textarea";
-import CategorySelect from "./CategorySelect";
+import { Textarea } from "../ui/textarea";
+import CategorySelect from "../CategorySelect";
 import { useState, type FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -22,6 +22,7 @@ const CreateQuizModal = () => {
   const [category, setCategory] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [nickname, setNickname] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
@@ -30,19 +31,23 @@ const CreateQuizModal = () => {
     setIsSubmitting(true);
 
     try {
+      if (category === "" || question === "" || answer === "") {
+        toast.error("카테고리, 문제, 답을 필수로 입력해주세요.");
+        return;
+      }
+
       const tableName = `${category}`;
 
       const createdAt = new Date().toISOString();
 
-      const { error } = await supabase
-        .from(tableName)
-        .insert([
-          {
-            question: sanitize(question),
-            answer: sanitize(answer),
-            create_at: createdAt,
-          },
-        ]);
+      const { error } = await supabase.from(tableName).insert([
+        {
+          question: sanitize(question),
+          answer: sanitize(answer),
+          create_at: createdAt,
+          nickname: sanitize(nickname),
+        },
+      ]);
 
       if (error) throw error;
 
@@ -54,6 +59,7 @@ const CreateQuizModal = () => {
       setCategory("");
       setQuestion("");
       setAnswer("");
+      setNickname("");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(`문제 추가 실패: ${error.message}`);
@@ -114,6 +120,18 @@ const CreateQuizModal = () => {
                 id="answer"
                 name="answer"
                 placeholder="답 입력"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-3">
+              <label htmlFor="nickname" className="text-sm">
+                닉네임 (선택)
+              </label>
+              <Input
+                id="nickname"
+                name="nickname"
+                placeholder="닉네임 입력 시 문제에 Thanks to로 표시됩니다."
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
               />
