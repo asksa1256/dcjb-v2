@@ -132,8 +132,8 @@ const CreateQuizModal = () => {
                 id="nickname"
                 name="nickname"
                 placeholder="등록하신 문제에 Thanks to로 표시됩니다."
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
               />
             </div>
           </div>

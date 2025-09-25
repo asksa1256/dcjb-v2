@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 const CreateInquiryModal = () => {
   const [contact, setContact] = useState("");
   const [inquiry, setInquiry] = useState("");
+  const [nickname, setNickname] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -92,9 +93,21 @@ const CreateInquiryModal = () => {
               <Input
                 id="contact"
                 name="contact"
-                placeholder="답변을 기재하신 연락처로 보내드립니다. (예: 이메일, 디스코드 아이디)"
+                placeholder="답변을 연락처로 보내드립니다. (예: 이메일, 디스코드 아이디)"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-3">
+              <label htmlFor="nickname" className="text-sm">
+                닉네임 <span className="text-gray-400">(선택)</span>
+              </label>
+              <Input
+                id="nickname"
+                name="nickname"
+                placeholder="관련 문제에 Thanks to로 표시됩니다."
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
               />
             </div>
           </div>
