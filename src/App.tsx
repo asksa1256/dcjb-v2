@@ -1,6 +1,7 @@
 import { Toaster } from "sonner";
-import CreateQuizModal from "./components/CreateQuizModal";
+import CreateQuizModal from "./components/Modal/CreateQuizModal";
 import SearchContainer from "./components/SearchContainer";
+import CreateInquiryModal from "./components/Modal/CreateInquiryModal";
 
 function App() {
   return (
@@ -15,6 +16,11 @@ function App() {
         }}
       />
       <CreateQuizModal />
+      <br />
+      <p className="text-gray-400 text-sm mb-4">
+        문의사항은 아래 버튼을 클릭해주세요.
+      </p>
+      <CreateInquiryModal />
     </main>
   );
 }
