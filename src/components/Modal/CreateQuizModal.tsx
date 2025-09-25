@@ -126,12 +126,12 @@ const CreateQuizModal = () => {
             </div>
             <div className="grid gap-3">
               <label htmlFor="nickname" className="text-sm">
-                닉네임 (선택)
+                닉네임 <span className="text-gray-400">(선택)</span>
               </label>
               <Input
                 id="nickname"
                 name="nickname"
-                placeholder="닉네임 입력 시 문제에 Thanks to로 표시됩니다."
+                placeholder="등록하신 문제에 Thanks to로 표시됩니다."
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
               />
