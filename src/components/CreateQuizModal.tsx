@@ -16,6 +16,7 @@ import { useState, type FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import supabase from "@/lib/supabase";
+import { sanitize } from "@/lib/sanitize";
 
 const CreateQuizModal = () => {
   const [category, setCategory] = useState("");
@@ -31,9 +32,17 @@ const CreateQuizModal = () => {
     try {
       const tableName = `${category}`;
 
+      const createdAt = new Date().toISOString();
+
       const { error } = await supabase
         .from(tableName)
-        .insert([{ question, answer }]);
+        .insert([
+          {
+            question: sanitize(question),
+            answer: sanitize(answer),
+            create_at: createdAt,
+          },
+        ]);
 
       if (error) throw error;
 
