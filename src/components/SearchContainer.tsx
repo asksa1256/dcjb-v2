@@ -52,7 +52,6 @@ const SearchContainer = () => {
 
       allData = allData.concat(data);
 
-      console.log(`현재까지 가져온 데이터 수: ${allData.length}`);
       setLoadingPercent(Math.floor((allData.length / totalCount) * 100));
     }
 
