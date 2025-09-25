@@ -1,26 +1,27 @@
-export interface Result {
-  id?: number;
-  question: string;
-  answer: string;
-}
-
 type Record =
   | {
-      answer: string | null;
-      question: string | null;
-    }
-  | {
-      answer: string | null;
-      question: string | null;
-    }
-  | {
-      answer: string | null;
       id?: number;
-      question: string;
-    }
-  | {
       answer: string | null;
       question: string | null;
+      nickname?: string | null;
+    }
+  | {
+      id?: number;
+      answer: string | null;
+      question: string | null;
+      nickname?: string | null;
+    }
+  | {
+      id?: number;
+      answer: string | null;
+      question: string | null;
+      nickname?: string | null;
+    }
+  | {
+      id?: number;
+      answer: string | null;
+      question: string | null;
+      nickname?: string | null;
     };
 
 export type Records = Record[];
