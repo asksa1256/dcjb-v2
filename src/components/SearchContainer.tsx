@@ -105,7 +105,8 @@ const SearchContainer = () => {
   }, [results, debouncedKeyword]);
 
   const isSearching = category && debouncedKeyword && isPending;
-  const isEmpty = debouncedKeyword.length > 0 && results.length === 0;
+  const isEmpty =
+    category && debouncedKeyword.length > 0 && filteredResults.length === 0;
 
   return (
     <section className="relative flex flex-col items-center w-full">
@@ -135,7 +136,8 @@ const SearchContainer = () => {
           )}
         </div>
 
-        <div className="mt-3 ml-3 text-sm">
+        <div className="mt-3 text-center mb-6 text-sm">
+          {!category && <p className="text-red-500">퀴즈를 선택해주세요.</p>}
           {isSearching && <p className="text-blue-500">검색 중...</p>}
           {isEmpty && <p className="text-gray-500">검색 결과가 없습니다.</p>}
           {error && <p className="text-red-500">검색 오류: {error.message}</p>}
@@ -143,11 +145,13 @@ const SearchContainer = () => {
       </div>
 
       {/* 검색 결과 */}
-      <SearchResults results={filteredResults} keyword={keyword} />
-      {debouncedKeyword.length > 0 && results.length > 0 && (
-        <p className="my-4 text-center text-xs text-gray-400">
-          검색 결과를 모두 불러왔습니다.
-        </p>
+      {debouncedKeyword.length > 0 && filteredResults.length > 0 && (
+        <>
+          <SearchResults results={filteredResults} keyword={keyword} />
+          <p className="my-4 text-center text-xs text-gray-400">
+            검색 결과를 모두 불러왔습니다.
+          </p>
+        </>
       )}
     </section>
   );
