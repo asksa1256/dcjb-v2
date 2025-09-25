@@ -39,7 +39,7 @@ const CreateInquiryModal = () => {
         {
           inquiry: sanitize(inquiry),
           contact: sanitize(contact),
-          create_at: createdAt,
+          created_at: createdAt,
         },
       ]);
 
