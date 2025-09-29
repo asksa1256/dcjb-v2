@@ -6,7 +6,7 @@ import CreateInquiryModal from "./components/Modal/CreateInquiryModal";
 function App() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-start px-6 pt-20 pb-10 bg-gray-50">
-      <div className="flex flex-col items-center justify-start max-w-[640px]">
+      <div className="flex flex-col w-full items-center justify-start max-w-[640px]">
         <h2 className="text-gray-400 text-lg text-left mb-8">🧀 심플족보 🐱</h2>
         <SearchContainer />
         <Toaster
