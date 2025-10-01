@@ -85,6 +85,7 @@ const SearchContainer = () => {
     queryKey: ["quiz", category],
     queryFn: () => fetchResults(category as TableNames),
     staleTime: Infinity,
+    gcTime: Infinity,
     enabled: !!category,
   });
 
