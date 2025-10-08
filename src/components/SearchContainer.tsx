@@ -34,7 +34,7 @@ const SearchContainer = () => {
       .select("*", { count: "exact", head: true });
 
     const totalCount = count || 0;
-    const batchSize = 1000;
+    const batchSize = 25000;
 
     type RecordType = Database["public"]["Tables"][typeof ctg]["Row"];
     let allData: RecordType[] = [];
