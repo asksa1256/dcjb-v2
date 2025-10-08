@@ -3,25 +3,25 @@ type Record =
       id?: number;
       answer: string | null;
       question: string | null;
-      nickname?: string | null;
+      nickname?: string | string[] | null;
     }
   | {
       id?: number;
       answer: string | null;
       question: string | null;
-      nickname?: string | null;
+      nickname?: string | string[] | null;
     }
   | {
       id?: number;
       answer: string | null;
       question: string | null;
-      nickname?: string | null;
+      nickname?: string | string[] | null;
     }
   | {
       id?: number;
       answer: string | null;
       question: string | null;
-      nickname?: string | null;
+      nickname?: string | string[] | null;
     };
 
 export type Records = Record[];

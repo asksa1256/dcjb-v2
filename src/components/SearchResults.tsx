@@ -8,6 +8,7 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
+  console.log(results);
   return (
     <ul className="w-full space-y-4">
       {results.map((quiz, i) => (
@@ -28,18 +29,20 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
             </p>
           </h6>
 
-          <div className="mt-3 flex items-center justify-between gap-2">
-            <h6 className="shrink-0">
-              <span className="text-md font-medium text-gray-500 mr-2">A.</span>
+          <div className="relative mt-3 flex items-center justify-between gap-2">
+            <h6 className="flex flex-nowrap w-[75%] shrink-0">
+              <span className="mt-1.5 text-md font-medium text-gray-500 mr-2">
+                A.
+              </span>
               <b className="rounded text-lg bg-blue-50 px-2 py-1 text-blue-600">
                 {quiz.answer}
               </b>
             </h6>
 
-            {quiz.nickname && (
-              <span className="inline-flex items-center text-gray-300 text-xs">
-                Thanks to ✨
-                <b className="max-w-[120px] overflow-ellipsis overflow-hidden whitespace-nowrap text-gray-400 text-sm">
+            {quiz.nickname && quiz.nickname[0] !== "" && (
+              <span className="absolute inline-flex right-0 bottom-2 items-center text-gray-300 text-xs">
+                ✨
+                <b className="w-[80%] inline-flex overflow-ellipsis overflow-hidden whitespace-nowrap text-gray-400 text-sm">
                   {quiz.nickname}
                 </b>
                 ✨
