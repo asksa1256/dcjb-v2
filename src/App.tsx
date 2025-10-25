@@ -2,6 +2,7 @@ import { Toaster } from "sonner";
 import CreateQuizModal from "./components/Modal/CreateQuizModal";
 import SearchContainer from "./components/SearchContainer";
 import CreateInquiryModal from "./components/Modal/CreateInquiryModal";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
 
         <CreateInquiryModal />
       </div>
+
+      {/* Vercel Analytics */}
+      <Analytics />
     </main>
   );
 }
