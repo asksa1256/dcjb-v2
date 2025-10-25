@@ -8,7 +8,6 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
-  console.log(results);
   return (
     <ul className="w-full space-y-4">
       {results.map((quiz, i) => (
