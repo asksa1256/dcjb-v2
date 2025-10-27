@@ -115,7 +115,7 @@ const SearchContainer = () => {
         <CategorySelect
           id="category"
           value={category || ""}
-          className="mb-6 w-full"
+          className="mb-4 w-full"
           onChange={handleChangeCategory}
         />
 
@@ -137,7 +137,7 @@ const SearchContainer = () => {
           )}
         </div>
 
-        <div className="mt-3 text-center mb-6 text-sm">
+        <div className="mt-3 text-center mb-4 text-sm">
           {!category && <p className="text-blue-500">퀴즈를 선택해주세요.</p>}
           {isSearching && <p className="text-blue-500">검색 중...</p>}
           {isEmpty && <p className="text-gray-500">검색 결과가 없습니다.</p>}
