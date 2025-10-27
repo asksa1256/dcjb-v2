@@ -19,7 +19,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           onKeyDown={(e) => {
             if (e.key === "Enter") copyToClipboard(quiz.answer || "");
           }}
-          className="flex flex-col gap-2 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
+          className="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
           <h6 className="flex gap-2">
             <span className="text-md font-medium text-gray-500 mt-1.5">Q.</span>
@@ -39,7 +39,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
             </h6>
 
             {quiz.nickname && (
-              <span className="absolute inline-flex right-0 bottom-2 items-center text-gray-300 text-xs">
+              <span className="absolute inline-flex gap-0.5 right-0 bottom-2 items-center text-gray-300 text-xs">
                 ✨
                 <b className="w-[80%] inline-flex overflow-ellipsis overflow-hidden whitespace-nowrap text-gray-400 text-sm">
                   {quiz.nickname}
