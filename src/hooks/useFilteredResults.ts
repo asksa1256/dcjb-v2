@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { type Record } from "@/types";
+import type { Record, Records } from "@/types";
 
 export function useFilteredResults(
-  results: Record[],
+  results: Records,
   debouncedKeyword: string
-): Record[] {
+): Records {
   return useMemo(() => {
     const trimmedKeyword = debouncedKeyword.trim().toLowerCase();
     if (trimmedKeyword.length === 0) return [];

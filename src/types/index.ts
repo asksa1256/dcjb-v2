@@ -1,4 +1,4 @@
-type Record =
+export type Record =
   | {
       id?: number;
       answer: string | null;
