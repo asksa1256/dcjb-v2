@@ -91,32 +91,53 @@ const SearchContainer = () => {
   });
 
   const filteredResults = useMemo(() => {
-    const trimmedKeyword = debouncedKeyword.trim();
+    const trimmedKeyword = debouncedKeyword.trim().toLowerCase();
+    if (trimmedKeyword.length === 0) return [];
 
-    if (trimmedKeyword.length === 0) {
-      return [];
-    }
+    const keywordChars = [...trimmedKeyword].filter((ch) => ch.trim() !== "");
 
-    const keywords = trimmedKeyword.toLowerCase().split(/\s+/).filter(Boolean);
+    const calcScore = (text: string, keyword: string) => {
+      const lowerText = text.toLowerCase();
 
-    return results.filter((item) => {
-      const fullText = `${item.question?.toLowerCase()}`;
-      const fullTextNoSpace = fullText.replace(/\s+/g, "");
-      const keywordNoSpace = trimmedKeyword.replace(/\s+/g, "");
+      // 연속 일치 점수 계산 (ex: '제4의불'이 붙어있을수록 가산점)
+      const normalizedKeyword = keyword.replace(/\s+/g, "");
+      const normalizedText = lowerText.replace(/\s+/g, "");
+      const continuousMatch = normalizedText.includes(normalizedKeyword)
+        ? 3
+        : 0;
 
-      return keywords.every((keyword) => {
-        // 초성 검색
-        if (isChosung(keyword)) {
-          const chosungText = getChosung(fullText);
-          // 공백 제거 후 연속된 초성으로 검색
-          const chosungNoSpace = chosungText.replace(/\s+/g, "");
-          return chosungNoSpace.includes(keywordNoSpace);
+      // 개별 문자 일치 수
+      const individualMatch = [...normalizedKeyword].reduce(
+        (acc, ch) => (lowerText.includes(ch) ? acc + 1 : acc),
+        0
+      );
+
+      return continuousMatch + individualMatch;
+    };
+
+    const filtered = results.filter((item) => {
+      const text = item.question?.toLowerCase() ?? "";
+
+      return keywordChars.every((char) => {
+        const lowerChar = char.toLowerCase();
+
+        if (isChosung(lowerChar)) {
+          const chosungText = getChosung(text);
+          return chosungText.includes(lowerChar);
         }
 
-        // 일반 검색 (띄어쓰기 무시)
-        return fullTextNoSpace.includes(keywordNoSpace);
+        return text.includes(lowerChar);
       });
     });
+
+    // 정확도 점수 기반 정렬
+    const sorted = [...filtered].sort((a, b) => {
+      const aScore = calcScore(a.question ?? "", trimmedKeyword);
+      const bScore = calcScore(b.question ?? "", trimmedKeyword);
+      return bScore - aScore;
+    });
+
+    return sorted;
   }, [results, debouncedKeyword]);
 
   const isSearching = category && debouncedKeyword && isPending;
