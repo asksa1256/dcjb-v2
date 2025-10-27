@@ -14,7 +14,7 @@ import SearchResults from "@/components/SearchResults";
 import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { getChosung, isChosung } from "@/lib/getChosung";
+import { useFilteredResults } from "@/hooks/useFilteredResults";
 
 type TableNames = keyof Database["public"]["Tables"];
 
@@ -90,55 +90,7 @@ const SearchContainer = () => {
     enabled: !!category,
   });
 
-  const filteredResults = useMemo(() => {
-    const trimmedKeyword = debouncedKeyword.trim().toLowerCase();
-    if (trimmedKeyword.length === 0) return [];
-
-    const keywordChars = [...trimmedKeyword].filter((ch) => ch.trim() !== "");
-
-    const calcScore = (text: string, keyword: string) => {
-      const lowerText = text.toLowerCase();
-
-      // 연속 일치 점수 계산 (ex: '제4의불'이 붙어있을수록 가산점)
-      const normalizedKeyword = keyword.replace(/\s+/g, "");
-      const normalizedText = lowerText.replace(/\s+/g, "");
-      const continuousMatch = normalizedText.includes(normalizedKeyword)
-        ? 3
-        : 0;
-
-      // 개별 문자 일치 수
-      const individualMatch = [...normalizedKeyword].reduce(
-        (acc, ch) => (lowerText.includes(ch) ? acc + 1 : acc),
-        0
-      );
-
-      return continuousMatch + individualMatch;
-    };
-
-    const filtered = results.filter((item) => {
-      const text = item.question?.toLowerCase() ?? "";
-
-      return keywordChars.every((char) => {
-        const lowerChar = char.toLowerCase();
-
-        if (isChosung(lowerChar)) {
-          const chosungText = getChosung(text);
-          return chosungText.includes(lowerChar);
-        }
-
-        return text.includes(lowerChar);
-      });
-    });
-
-    // 정확도 점수 기반 정렬
-    const sorted = [...filtered].sort((a, b) => {
-      const aScore = calcScore(a.question ?? "", trimmedKeyword);
-      const bScore = calcScore(b.question ?? "", trimmedKeyword);
-      return bScore - aScore;
-    });
-
-    return sorted;
-  }, [results, debouncedKeyword]);
+  const filteredResults = useFilteredResults(results, debouncedKeyword);
 
   const isSearching = category && debouncedKeyword && isPending;
   const isEmpty =
