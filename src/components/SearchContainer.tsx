@@ -101,19 +101,20 @@ const SearchContainer = () => {
 
     return results.filter((item) => {
       const fullText = `${item.question?.toLowerCase()}`;
+      const fullTextNoSpace = fullText.replace(/\s+/g, "");
+      const keywordNoSpace = trimmedKeyword.replace(/\s+/g, "");
 
       return keywords.every((keyword) => {
         // 초성 검색
         if (isChosung(keyword)) {
           const chosungText = getChosung(fullText);
           // 공백 제거 후 연속된 초성으로 검색
-          const keywordNoSpace = keyword.replace(/\s+/g, "");
           const chosungNoSpace = chosungText.replace(/\s+/g, "");
           return chosungNoSpace.includes(keywordNoSpace);
         }
 
-        // 일반 검색
-        return fullText.includes(keyword);
+        // 일반 검색 (띄어쓰기 무시)
+        return fullTextNoSpace.includes(keywordNoSpace);
       });
     });
   }, [results, debouncedKeyword]);
