@@ -8,7 +8,6 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
-  console.log(results);
   return (
     <ul className="w-full space-y-4">
       {results.map((quiz, i) => (
@@ -39,7 +38,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
               </b>
             </h6>
 
-            {quiz.nickname && quiz.nickname[0] !== "" && (
+            {quiz.nickname && (
               <span className="absolute inline-flex right-0 bottom-2 items-center text-gray-300 text-xs">
                 ✨
                 <b className="w-[80%] inline-flex overflow-ellipsis overflow-hidden whitespace-nowrap text-gray-400 text-sm">
