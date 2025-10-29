@@ -14,7 +14,7 @@ import SearchResults from "@/components/SearchResults";
 import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { useFilteredResults } from "@/hooks/useFilteredResults";
+import { getChosung, isChosung } from "@/lib/getChosung";
 
 type TableNames = keyof Database["public"]["Tables"];
 
@@ -90,7 +90,33 @@ const SearchContainer = () => {
     enabled: !!category,
   });
 
-  const filteredResults = useFilteredResults(results, debouncedKeyword);
+  const filteredResults = useMemo(() => {
+    const trimmedKeyword = debouncedKeyword.trim();
+
+    if (trimmedKeyword.length === 0) {
+      return [];
+    }
+
+    const keywords = trimmedKeyword.toLowerCase().split(/\s+/).filter(Boolean);
+
+    return results.filter((item) => {
+      const fullText = `${item.question?.toLowerCase()}`;
+
+      return keywords.every((keyword) => {
+        // 초성 검색
+        if (isChosung(keyword)) {
+          const chosungText = getChosung(fullText);
+          // 공백 제거 후 연속된 초성으로 검색
+          const keywordNoSpace = keyword.replace(/\s+/g, "");
+          const chosungNoSpace = chosungText.replace(/\s+/g, "");
+          return chosungNoSpace.includes(keywordNoSpace);
+        }
+
+        // 일반 검색
+        return fullText.includes(keyword);
+      });
+    });
+  }, [results, debouncedKeyword]);
 
   const isSearching = category && debouncedKeyword && isPending;
   const isEmpty =
