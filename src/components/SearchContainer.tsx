@@ -44,6 +44,7 @@ const SearchContainer = () => {
       const { data, error } = await supabase
         .from(ctg)
         .select("*")
+        .order("updated_at", { ascending: false }) // 최신 문제부터 출력
         .range(i, i + batchSize - 1);
 
       if (error) {
@@ -144,9 +145,7 @@ const SearchContainer = () => {
           </div>
 
           {category && loadingPercent < 100 && (
-            <p className="text-xs text-gray-400">
-              문제 불러오는 중... {loadingPercent}%
-            </p>
+            <p className="text-xs text-gray-400">문제 불러오는 중...</p>
           )}
         </div>
 
