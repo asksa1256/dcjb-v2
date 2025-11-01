@@ -3,6 +3,7 @@ import CreateQuizModal from "./components/Modal/CreateQuizModal";
 import SearchContainer from "./components/SearchContainer";
 import CreateInquiryModal from "./components/Modal/CreateInquiryModal";
 import { Analytics } from "@vercel/analytics/react";
+import ContributorsModal from "./components/Modal/ContributorsModal";
 
 function App() {
   return (
@@ -21,7 +22,10 @@ function App() {
 
         <div className="h-[1px] w-full bg-gray-200 my-6"></div>
 
-        <CreateInquiryModal />
+        <div className="flex gap-2">
+          <CreateInquiryModal />
+          <ContributorsModal />
+        </div>
       </div>
 
       {/* Vercel Analytics */}
