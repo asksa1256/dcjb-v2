@@ -4,10 +4,3 @@ export const CATEGORY = {
   KKONG: "kkong",
   GARO: "garo",
 };
-
-export const QUIZ_TABLES = [
-  "quiz_kkong",
-  "quiz_kkororok",
-  "quiz_ox",
-  "quiz_garo",
-];

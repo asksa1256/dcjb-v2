@@ -12,23 +12,19 @@ import {
 import { Heart } from "lucide-react";
 import supabase from "@/lib/supabase";
 import { useState } from "react";
-import { QUIZ_TABLES } from "@/constants";
 import ContributorList from "@/components/ContributorList";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchContributors(): Promise<string[]> {
   const allNicknames: string[] = [];
 
-  for (const table of QUIZ_TABLES) {
-    const { data, error } = await supabase
-      .from(table)
-      .select("nickname")
-      .not("nickname", "is", null)
-      .limit(100);
+  const { data, error } = await supabase
+    .from("contributors_view")
+    .select("nickname")
+    .limit(1000);
 
-    if (!error && data) {
-      allNicknames.push(...data.map((d) => d.nickname));
-    }
+  if (!error && data) {
+    allNicknames.push(...data.map((d) => d.nickname));
   }
 
   return Array.from(new Set(allNicknames));
