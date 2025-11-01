@@ -59,8 +59,9 @@ const ContributorsModal = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Thanks to...</DialogTitle>
-          <DialogDescription>
-            {/* 기여해주신 분들께 감사드립니다! 🎉 */}
+          <DialogDescription className="text-xs">
+            기여해주신 분들께 감사드립니다! 🎉 <br />
+            문제를 등록해주시면 이곳에 닉네임이 등록됩니다.
           </DialogDescription>
         </DialogHeader>
 
@@ -71,7 +72,7 @@ const ContributorsModal = () => {
             데이터를 불러오지 못했습니다.
           </p>
         ) : contributors && contributors.length > 0 ? (
-          <ContributorList contributors={contributors} />
+          <ContributorList contributors={contributors} open={open} />
         ) : (
           <p className="text-center text-gray-500 text-sm py-8">
             아직 기여자가 없어요. 문제를 등록하고 첫 번째 기여자가 되어주세요!
