@@ -15,6 +15,7 @@ import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { getChosung, isChosung } from "@/lib/getChosung";
+import LoadingDots from "./ui/LoadingDots";
 
 type TableNames = keyof Database["public"]["Tables"];
 
@@ -35,27 +36,24 @@ const SearchContainer = () => {
       .select("*", { count: "exact", head: true });
 
     const totalCount = count || 0;
-    const batchSize = 25000;
 
     type RecordType = Database["public"]["Tables"][typeof ctg]["Row"];
     let allData: RecordType[] = [];
 
-    for (let i = 0; i < totalCount; i += batchSize) {
-      const { data, error } = await supabase
-        .from(ctg)
-        .select("*")
-        .order("updated_at", { ascending: false }) // 최신 문제부터 출력
-        .range(i, i + batchSize - 1);
-
-      if (error) {
-        console.error("Error fetching data:", error);
-        break;
+    const { data, error } = await supabase.rpc(
+      "get_questions_sorted_by_length",
+      {
+        table_name: ctg,
       }
+    );
 
-      allData = allData.concat(data);
-
-      setLoadingPercent(Math.floor((allData.length / totalCount) * 100));
+    if (error) {
+      console.error("Error fetching data:", error);
     }
+
+    allData = allData.concat(data);
+
+    setLoadingPercent(Math.floor((allData.length / totalCount) * 100));
 
     return allData;
   }, []);
@@ -145,7 +143,9 @@ const SearchContainer = () => {
           </div>
 
           {category && loadingPercent < 100 && (
-            <p className="text-xs text-gray-400">문제 불러오는 중...</p>
+            <p className="text-xs text-gray-400">
+              문제 불러오는 중{<LoadingDots loadingPercent={loadingPercent} />}
+            </p>
           )}
         </div>
 
