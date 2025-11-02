@@ -80,7 +80,9 @@ const ContributorsModal = () => {
 
         <DialogFooter className="mt-6">
           <DialogClose asChild>
-            <Button variant="outline">닫기</Button>
+            <Button variant="outline" className="w-auto">
+              닫기
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
