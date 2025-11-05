@@ -33,7 +33,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
               <span className="mt-1.5 text-md font-medium text-gray-500 mr-2">
                 A.
               </span>
-              <b className="rounded text-lg text-blue-600 px-2 py-1 bg-primary-background">
+              <b className="rounded text-lg text-blue-500 px-2 py-1 bg-primary-background">
                 {quiz.answer}
               </b>
             </h6>

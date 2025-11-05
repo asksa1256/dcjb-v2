@@ -20,7 +20,7 @@ export const highlightWords = (
 
   return parts.map((part, i) =>
     regex.test(part) ? (
-      <span key={i} className="text-blue-600 font-bold">
+      <span key={i} className="text-blue-500 font-bold">
         {part}
       </span>
     ) : (
