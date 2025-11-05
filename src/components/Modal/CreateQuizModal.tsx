@@ -46,7 +46,7 @@ const CreateQuizModal = () => {
           question: sanitize(question),
           answer: sanitize(answer),
           created_at: createdAt,
-          nickname: nickname ? [sanitize(nickname)] : null,
+          nickname: nickname ? sanitize(nickname) : null,
         },
       ]);
 
