@@ -4,13 +4,17 @@ import SearchContainer from "./components/SearchContainer";
 import CreateInquiryModal from "./components/Modal/CreateInquiryModal";
 import { Analytics } from "@vercel/analytics/react";
 import ContributorsModal from "./components/Modal/ContributorsModal";
+import DarkModeToggleButton from "./components/DarkModeToggleButton";
 
 function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start px-6 pt-20 pb-10 bg-gray-50">
+    <main className="relative flex min-h-screen flex-col items-center justify-start px-6 pt-20 pb-10 bg-secondary">
+      <DarkModeToggleButton className="absolute top-4 right-4" />
+
       <div className="flex flex-col w-full items-center justify-start max-w-[640px]">
         <h2 className="text-gray-400 text-lg text-left mb-6">🧀 심플족보 🐱</h2>
         <SearchContainer />
+
         <Toaster
           position="bottom-center"
           richColors
@@ -18,9 +22,10 @@ function App() {
             className: "font-pretendard",
           }}
         />
+
         <CreateQuizModal />
 
-        <div className="h-[1px] w-full bg-gray-200 my-6"></div>
+        <div className="h-[1px] w-full bg-border my-6"></div>
 
         <div className="flex gap-2">
           <CreateInquiryModal />

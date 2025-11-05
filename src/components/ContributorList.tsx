@@ -51,7 +51,7 @@ const ContributorList = ({ contributors, open }: ContributorListProps) => {
               key={name}
               className="flex items-center gap-2 rounded-xl transition-colors text-sm font-medium truncate"
             >
-              <span className="truncate">💙 {name}</span>
+              <span className="truncate text-foreground">💙 {name}</span>
             </li>
           ))}
         </ul>

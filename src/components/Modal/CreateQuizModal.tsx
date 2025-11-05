@@ -93,7 +93,10 @@ const CreateQuizModal = () => {
         <form onSubmit={handleSubmit}>
           <div className="grid gap-8">
             <div className="grid gap-2">
-              <label htmlFor="category" className="text-sm">
+              <label
+                htmlFor="category"
+                className="text-sm text-foreground font-medium"
+              >
                 카테고리
               </label>
               <CategorySelect
@@ -103,7 +106,10 @@ const CreateQuizModal = () => {
               />
             </div>
             <div className="grid gap-3">
-              <label htmlFor="question" className="text-sm">
+              <label
+                htmlFor="question"
+                className="text-sm text-foreground font-medium"
+              >
                 문제
               </label>
               <Textarea
@@ -115,7 +121,10 @@ const CreateQuizModal = () => {
               />
             </div>
             <div className="grid gap-3">
-              <label htmlFor="answer" className="text-sm">
+              <label
+                htmlFor="answer"
+                className="text-sm text-foreground font-medium"
+              >
                 답
               </label>
               <Input
@@ -127,7 +136,10 @@ const CreateQuizModal = () => {
               />
             </div>
             <div className="grid gap-3">
-              <label htmlFor="nickname" className="text-sm">
+              <label
+                htmlFor="nickname"
+                className="text-sm text-foreground font-medium"
+              >
                 닉네임 <span className="text-gray-400">(선택)</span>
               </label>
               <Input

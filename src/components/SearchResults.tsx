@@ -19,11 +19,11 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           onKeyDown={(e) => {
             if (e.key === "Enter") copyToClipboard(quiz.answer || "");
           }}
-          className="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
+          className="flex flex-col rounded-xl border border-border bg-background p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
           <h6 className="flex gap-2">
             <span className="text-md font-medium text-gray-500 mt-1.5">Q.</span>
-            <p className="mt-1 text-lg text-gray-800">
+            <p className="mt-1 text-lg text-foreground">
               {highlightWords(quiz.question || "", keyword)}
             </p>
           </h6>
@@ -33,7 +33,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
               <span className="mt-1.5 text-md font-medium text-gray-500 mr-2">
                 A.
               </span>
-              <b className="rounded text-lg bg-blue-50 px-2 py-1 text-blue-600">
+              <b className="rounded text-lg text-blue-600 px-2 py-1 bg-primary-background">
                 {quiz.answer}
               </b>
             </h6>

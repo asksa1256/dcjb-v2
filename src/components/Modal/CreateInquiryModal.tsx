@@ -91,7 +91,10 @@ const CreateInquiryModal = () => {
               />
             </div>
             <div className="grid gap-3">
-              <label htmlFor="contact" className="text-sm">
+              <label
+                htmlFor="contact"
+                className="text-sm text-foreground font-medium"
+              >
                 연락처 <span className="text-gray-400">(선택)</span>
               </label>
               <Input
@@ -103,7 +106,10 @@ const CreateInquiryModal = () => {
               />
             </div>
             <div className="grid gap-3">
-              <label htmlFor="nickname" className="text-sm">
+              <label
+                htmlFor="nickname"
+                className="text-sm text-foreground font-medium"
+              >
                 닉네임 <span className="text-gray-400">(선택)</span>
               </label>
               <Input
