@@ -1,21 +1,17 @@
-import {
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-  type ChangeEvent,
-} from "react";
+import { useState, useMemo, useRef, type ChangeEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CategorySelect from "@/components/CategorySelect";
 import debounce from "@/lib/debounce";
-import supabase from "@/lib/supabase";
 import SearchResults from "@/components/SearchResults";
 import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { getChosung, isChosung } from "@/lib/getChosung";
 import LoadingDots from "./ui/LoadingDots";
+import { copyToClipboard } from "@/lib/copyToClipborad";
+import { toast } from "sonner";
+import filterResults from "@/lib/filterResults";
+import getResults from "@/api/getResults";
 
 type TableNames = keyof Database["public"]["Tables"];
 
@@ -30,33 +26,24 @@ const SearchContainer = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingPercent, setLoadingPercent] = useState(0);
 
-  const fetchResults = useCallback(async (ctg: TableNames) => {
-    const { count } = await supabase
-      .from(ctg)
-      .select("*", { count: "exact", head: true });
+  const {
+    data: results = [],
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["quiz", category],
+    queryFn: () =>
+      getResults(category as TableNames).then((res) => {
+        setLoadingPercent(res.loadingPercent);
+        return res.allData;
+      }),
+    enabled: !!category,
+  });
 
-    const totalCount = count || 0;
-
-    type RecordType = Database["public"]["Tables"][typeof ctg]["Row"];
-    let allData: RecordType[] = [];
-
-    const { data, error } = await supabase.rpc(
-      "get_questions_sorted_by_length",
-      {
-        table_name: ctg,
-      }
-    );
-
-    if (error) {
-      console.error("Error fetching data:", error);
-    }
-
-    allData = allData.concat(data);
-
-    setLoadingPercent(Math.floor((allData.length / totalCount) * 100));
-
-    return allData;
-  }, []);
+  const filteredResults = useMemo(
+    () => filterResults(results, debouncedKeyword),
+    [results, debouncedKeyword]
+  );
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -79,49 +66,17 @@ const SearchContainer = () => {
     clearSearch();
   };
 
-  const {
-    data: results = [],
-    isPending,
-    error,
-  } = useQuery({
-    queryKey: ["quiz", category],
-    queryFn: () => fetchResults(category as TableNames),
-    staleTime: Infinity,
-    gcTime: Infinity,
-    enabled: !!category,
-  });
-
-  const filteredResults = useMemo(() => {
-    const trimmedKeyword = debouncedKeyword.trim();
-
-    if (trimmedKeyword.length === 0) {
-      return [];
-    }
-
-    const keywords = trimmedKeyword.toLowerCase().split(/\s+/).filter(Boolean);
-
-    return results.filter((item) => {
-      const fullText = `${item.question?.toLowerCase()}`;
-
-      return keywords.every((keyword) => {
-        // 초성 검색
-        if (isChosung(keyword)) {
-          const chosungText = getChosung(fullText);
-          // 공백 제거 후 연속된 초성으로 검색
-          const keywordNoSpace = keyword.replace(/\s+/g, "");
-          const chosungNoSpace = chosungText.replace(/\s+/g, "");
-          return chosungNoSpace.includes(keywordNoSpace);
-        }
-
-        // 일반 검색
-        return fullText.includes(keyword);
-      });
-    });
-  }, [results, debouncedKeyword]);
-
   const isSearching = category && debouncedKeyword && isPending;
   const isEmpty =
     category && debouncedKeyword.length > 0 && filteredResults.length === 0;
+
+  // 검색 결과가 1개이고 '꽁꽁' 퀴즈일 경우, 답 자동 복사
+  useEffect(() => {
+    if (filteredResults.length === 1 && category === "quiz_kkong") {
+      copyToClipboard(filteredResults[0].answer || "");
+      toast.success(`복사 완료: ${filteredResults[0].answer || ""}`);
+    }
+  }, [filteredResults, category]);
 
   return (
     <section className="relative flex flex-col items-center w-full">
