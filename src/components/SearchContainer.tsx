@@ -69,7 +69,7 @@ const SearchContainer = () => {
     setDebouncedKeyword("");
     if (inputRef.current) {
       setTimeout(() => {
-        inputRef.current?.focus();
+        inputRef.current?.focus(); // 포커스 타이밍 늦춤 (input값 IME 초기화 이슈 해결 목적)
       }, 0);
     }
   };
