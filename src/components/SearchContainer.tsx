@@ -9,7 +9,6 @@ import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import LoadingDots from "./ui/LoadingDots";
 import { copyToClipboard } from "@/lib/copyToClipborad";
-import { toast } from "sonner";
 import filterResults from "@/lib/filterResults";
 import getResults from "@/api/getResults";
 
@@ -74,7 +73,6 @@ const SearchContainer = () => {
   useEffect(() => {
     if (filteredResults.length === 1 && category === "quiz_kkong") {
       copyToClipboard(filteredResults[0].answer || "");
-      toast.success(`복사 완료: ${filteredResults[0].answer || ""}`);
     }
   }, [filteredResults, category]);
 
