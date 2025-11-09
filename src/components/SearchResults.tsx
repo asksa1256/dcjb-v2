@@ -9,7 +9,7 @@ interface SearchResultsProps {
 
 const SearchResults = ({ results, keyword }: SearchResultsProps) => {
   return (
-    <ul className="w-full space-y-4">
+    <ul className="w-full flex flex-col gap-2">
       {results.map((quiz, i) => (
         <li
           key={`${quiz.answer}-${i}`}
@@ -19,7 +19,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           onKeyDown={(e) => {
             if (e.key === "Enter") copyToClipboard(quiz.answer || "");
           }}
-          className="flex flex-col rounded-xl border border-border bg-background p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
+          className="flex flex-col sm:rounded-xl border border-border bg-background p-5 md:shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
           <h6 className="flex gap-2">
             <span className="text-md font-medium text-gray-500 mt-1.5">Q.</span>
@@ -28,12 +28,12 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
             </p>
           </h6>
 
-          <div className="relative mt-3 flex items-center justify-between gap-2">
+          <div className="relative mt-2 flex items-center justify-between gap-2">
             <h6 className="flex flex-nowrap w-[75%] shrink-0">
               <span className="mt-1.5 text-md font-medium text-gray-500 mr-2">
                 A.
               </span>
-              <b className="rounded text-lg text-blue-500 px-2 py-1 bg-primary-background">
+              <b className="rounded text-lg text-orange-500 px-2 py-1 bg-answer-background">
                 {quiz.answer}
               </b>
             </h6>

@@ -8,7 +8,7 @@ import DarkModeToggleButton from "./components/DarkModeToggleButton";
 
 function App() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-start px-6 pt-20 pb-10 bg-secondary">
+    <main className="relative flex min-h-screen flex-col items-center justify-start md:px-6 pt-5.5 md:pt-6 pb-10 bg-secondary">
       <DarkModeToggleButton className="absolute top-4 right-4" />
 
       <div className="flex flex-col w-full items-center justify-start max-w-[640px]">
