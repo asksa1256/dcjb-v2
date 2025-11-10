@@ -119,8 +119,8 @@ const SearchContainer = () => {
                 onChange={handleSearch}
               />
               {debouncedKeyword && (
-                <p className="text-gray-400 text-xs mt-1 ml-4">
-                  Ctrl + X 입력 시 검색창 비움
+                <p className="text-gray-400 text-xs mt-1 ml-2 break-keep">
+                  윈도우 `Ctrl + X` / 맥북 `Cmd + X` 입력 시 검색창 지우기
                 </p>
               )}
             </div>
