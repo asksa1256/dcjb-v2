@@ -83,12 +83,15 @@ const SearchContainer = () => {
       if ((e.ctrlKey || e.metaKey) && (e.key === "x" || e.key === "X")) {
         e.preventDefault();
 
-        setKeyword("");
-        debouncedSetKeyword("");
+        // 마지막 글자 안 지워지는 현상 방지 (다음 매크로태스크에서 입력값 지우기 실행)
+        setTimeout(() => {
+          setKeyword("");
+          debouncedSetKeyword("");
 
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+          if (inputRef.current) {
+            inputRef.current.focus();
+          }
+        }, 0);
       }
     };
 
@@ -120,7 +123,7 @@ const SearchContainer = () => {
               />
               {debouncedKeyword && (
                 <p className="text-gray-400 text-xs mt-1 ml-2 break-keep">
-                  윈도우 `Ctrl + X` / 맥북 `Cmd + X` 입력 시 검색창 지우기
+                  윈도우 `Ctrl + X` / 맥북 `Cmd + X`: 지우기
                 </p>
               )}
             </div>
