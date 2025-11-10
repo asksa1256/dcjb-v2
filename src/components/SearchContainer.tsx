@@ -77,10 +77,10 @@ const SearchContainer = () => {
     }
   }, [filteredResults, category]);
 
-  // 'Ctrl+X' 입력 시 검색어 지우기
+  // esc 입력 시 검색어 지우기
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && (e.key === "x" || e.key === "X")) {
+      if (e.key === "Escape") {
         e.preventDefault();
 
         // 마지막 글자 안 지워지는 현상 방지 (다음 매크로태스크에서 입력값 지우기 실행)
@@ -122,8 +122,11 @@ const SearchContainer = () => {
                 onChange={handleSearch}
               />
               {debouncedKeyword && (
-                <p className="text-gray-400 text-xs mt-1 ml-2 break-keep">
-                  윈도우 `Ctrl + X` / 맥북 `Cmd + X`: 지우기
+                <p className="text-gray-400 text-xs mt-1.5 ml-0.5 break-keep">
+                  <span className="bg-background mr-1 py-0.5 p-1 rounded-sm shadow-sm">
+                    esc
+                  </span>
+                  : 지우기
                 </p>
               )}
             </div>
