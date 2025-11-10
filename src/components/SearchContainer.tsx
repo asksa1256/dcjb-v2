@@ -80,7 +80,7 @@ const SearchContainer = () => {
   // 'Ctrl+X' 입력 시 검색어 지우기
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && (e.key === "x" || e.key === "X")) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "x" || e.key === "X")) {
         e.preventDefault();
 
         setKeyword("");
@@ -97,7 +97,7 @@ const SearchContainer = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [debouncedSetKeyword]);
 
   return (
     <section className="relative flex flex-col items-center w-full">
