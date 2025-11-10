@@ -37,6 +37,7 @@ const SearchContainer = () => {
         return res.allData;
       }),
     enabled: !!category,
+    staleTime: Infinity,
   });
 
   const filteredResults = useMemo(
@@ -76,6 +77,28 @@ const SearchContainer = () => {
     }
   }, [filteredResults, category]);
 
+  // 'Ctrl+X' 입력 시 검색어 지우기
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && (e.key === "x" || e.key === "X")) {
+        e.preventDefault();
+
+        setKeyword("");
+        debouncedSetKeyword("");
+
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <section className="relative flex flex-col items-center w-full">
       <div className="flex flex-col max-w-[320px] self-center">
@@ -88,12 +111,20 @@ const SearchContainer = () => {
 
         <div className="flex flex-col gap-4 items-center">
           <div className="flex gap-4">
-            <Input
-              ref={inputRef}
-              value={keyword}
-              placeholder="검색어 입력..."
-              onChange={handleSearch}
-            />
+            <div>
+              <Input
+                ref={inputRef}
+                value={keyword}
+                placeholder="검색어 입력..."
+                onChange={handleSearch}
+              />
+              {debouncedKeyword && (
+                <p className="text-gray-400 text-xs mt-1 ml-4">
+                  Ctrl + X 입력 시 검색창 비움
+                </p>
+              )}
+            </div>
+
             <Button onClick={clearSearch}>지우기</Button>
           </div>
 
