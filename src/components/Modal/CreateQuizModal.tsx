@@ -60,7 +60,6 @@ const CreateQuizModal = () => {
       setCategory("");
       setQuestion("");
       setAnswer("");
-      setNickname("");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(`문제 추가 실패: ${error.message}`);
