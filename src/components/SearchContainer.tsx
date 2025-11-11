@@ -23,22 +23,16 @@ const SearchContainer = () => {
   );
   const [category, setCategory] = useState<Category | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [loadingPercent, setLoadingPercent] = useState(0);
 
-  const {
-    data: results = [],
-    isPending,
-    error,
-  } = useQuery({
+  const { data, isPending, error } = useQuery({
     queryKey: ["quiz", category],
-    queryFn: () =>
-      getResults(category as TableNames).then((res) => {
-        setLoadingPercent(res.loadingPercent);
-        return res.allData;
-      }),
+    queryFn: () => getResults(category as TableNames),
     enabled: !!category,
     staleTime: Infinity,
   });
+
+  const loadingPercent = data?.loadingPercent ?? 0;
+  const results = useMemo(() => data?.allData ?? [], [data]);
 
   const filteredResults = useMemo(
     () => filterResults(results, debouncedKeyword),
