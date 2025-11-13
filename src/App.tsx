@@ -11,7 +11,7 @@ function App() {
     <main className="relative flex min-h-screen flex-col items-center justify-start md:px-6 pt-5.5 md:pt-6 pb-10 bg-secondary">
       <DarkModeToggleButton className="absolute top-4 right-4" />
 
-      <div className="flex flex-col w-full items-center justify-start max-w-[640px]">
+      <section className="flex flex-col w-full items-center justify-start max-w-[640px]">
         <h2 className="text-gray-400 text-lg text-left mb-6">🧀 심플족보 🐱</h2>
         <SearchContainer />
 
@@ -31,7 +31,7 @@ function App() {
           <CreateInquiryModal />
           <ContributorsModal />
         </div>
-      </div>
+      </section>
 
       {/* Vercel Analytics */}
       <Analytics />
