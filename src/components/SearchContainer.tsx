@@ -23,22 +23,16 @@ const SearchContainer = () => {
   );
   const [category, setCategory] = useState<Category | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [loadingPercent, setLoadingPercent] = useState(0);
 
-  const {
-    data: results = [],
-    isPending,
-    error,
-  } = useQuery({
+  const { data, isPending, error } = useQuery({
     queryKey: ["quiz", category],
-    queryFn: () =>
-      getResults(category as TableNames).then((res) => {
-        setLoadingPercent(res.loadingPercent);
-        return res.allData;
-      }),
+    queryFn: () => getResults(category as TableNames),
     enabled: !!category,
     staleTime: Infinity,
   });
+
+  const loadingPercent = data?.loadingPercent ?? 0;
+  const results = useMemo(() => data?.allData ?? [], [data]);
 
   const filteredResults = useMemo(
     () => filterResults(results, debouncedKeyword),
@@ -77,18 +71,21 @@ const SearchContainer = () => {
     }
   }, [filteredResults, category]);
 
-  // 'Ctrl+X' 입력 시 검색어 지우기
+  // esc 입력 시 검색어 지우기
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && (e.key === "x" || e.key === "X")) {
+      if (e.key === "Escape") {
         e.preventDefault();
 
-        setKeyword("");
-        debouncedSetKeyword("");
+        // 마지막 글자 안 지워지는 현상 방지 (다음 매크로태스크에서 입력값 지우기 실행)
+        setTimeout(() => {
+          setKeyword("");
+          debouncedSetKeyword("");
 
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+          if (inputRef.current) {
+            inputRef.current.focus();
+          }
+        }, 0);
       }
     };
 
@@ -97,7 +94,7 @@ const SearchContainer = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [debouncedSetKeyword]);
 
   return (
     <section className="relative flex flex-col items-center w-full">
@@ -119,8 +116,11 @@ const SearchContainer = () => {
                 onChange={handleSearch}
               />
               {debouncedKeyword && (
-                <p className="text-gray-400 text-xs mt-1 ml-4">
-                  Ctrl + X 입력 시 검색창 비움
+                <p className="text-gray-400 text-xs mt-1.5 ml-0.5 break-keep">
+                  <span className="bg-background mr-1 py-0.5 p-1 rounded-sm shadow-sm">
+                    esc
+                  </span>
+                  : 지우기
                 </p>
               )}
             </div>

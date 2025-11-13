@@ -43,10 +43,10 @@ const CreateQuizModal = () => {
 
       const { error } = await supabase.from(tableName).insert([
         {
-          question: sanitize(question),
-          answer: sanitize(answer),
+          question: sanitize(question.trim()),
+          answer: sanitize(answer.trim()),
           created_at: createdAt,
-          nickname: nickname ? sanitize(nickname) : null,
+          nickname: nickname ? sanitize(nickname.trim()) : null,
         },
       ]);
 
@@ -60,7 +60,6 @@ const CreateQuizModal = () => {
       setCategory("");
       setQuestion("");
       setAnswer("");
-      setNickname("");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(`문제 추가 실패: ${error.message}`);
