@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://spjb.vercel.app/sitemap.xml
