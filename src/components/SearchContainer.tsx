@@ -29,6 +29,7 @@ const SearchContainer = () => {
     queryFn: () => getResults(category as TableNames),
     enabled: !!category,
     staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
   const loadingPercent = data?.loadingPercent ?? 0;
