@@ -9,9 +9,6 @@ import DarkModeToggleButton from "./components/DarkModeToggleButton";
 export default function App() {
   return (
     <>
-      <title>심플족보 - 큐플레이 웹족보</title>
-      <meta name="description" content="큐플레이 문제 검색, 문제 등록" />
-
       <main className="relative flex min-h-screen flex-col items-center justify-start md:px-6 pt-5.5 md:pt-6 pb-10 bg-secondary">
         <DarkModeToggleButton className="absolute top-4 right-4" />
 
