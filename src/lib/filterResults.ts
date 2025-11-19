@@ -6,9 +6,9 @@ type Record = Database["public"]["Tables"][TableNames]["Row"];
 
 const filterResults = (results: Record[], keyword: string) => {
   const trimmedKeyword = keyword.trim();
-  if (!trimmedKeyword) return [];
+  if (!trimmedKeyword || trimmedKeyword.length < 2) return []; // 최소 2글자 이상부터 검색
 
-  const keywords = trimmedKeyword.toLowerCase().split(/\s+/).filter(Boolean);
+  const keywords = trimmedKeyword.toLowerCase().split(/\s+/).filter(Boolean); // 공백 기준 키워드 분리
 
   return results.filter((item) => {
     const fullText = `${item.question?.toLowerCase()}`;
