@@ -29,6 +29,7 @@ const SearchContainer = () => {
     queryFn: () => getResults(category as TableNames),
     enabled: !!category,
     staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
   const loadingPercent = data?.loadingPercent ?? 0;
@@ -62,7 +63,7 @@ const SearchContainer = () => {
 
   const isSearching = category && debouncedKeyword && isPending;
   const isEmpty =
-    category && debouncedKeyword.length > 0 && filteredResults.length === 0;
+    category && debouncedKeyword.length >= 2 && filteredResults.length === 0;
 
   // 검색 결과가 1개이고 '꽁꽁' 퀴즈일 경우, 답 자동 복사
   useEffect(() => {
@@ -102,20 +103,20 @@ const SearchContainer = () => {
         <CategorySelect
           id="category"
           value={category || ""}
-          className="mb-4 w-full"
+          className="mb-2 w-full"
           onChange={handleChangeCategory}
         />
 
         <div className="flex flex-col gap-4 items-center">
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <div>
               <Input
                 ref={inputRef}
                 value={keyword}
-                placeholder="검색어 입력..."
+                placeholder="🔎 2글자 이상 입력..."
                 onChange={handleSearch}
               />
-              {debouncedKeyword && (
+              {debouncedKeyword.length >= 2 && (
                 <p className="text-gray-400 text-xs mt-1.5 ml-0.5 break-keep">
                   <span className="bg-background mr-1 py-0.5 p-1 rounded-sm shadow-sm">
                     esc
