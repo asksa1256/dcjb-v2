@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://spjb.vercel.app/sitemap.xml
+Sitemap: https://spjb.kr/sitemap.xml
