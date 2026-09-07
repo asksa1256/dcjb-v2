@@ -63,9 +63,12 @@ const SearchContainer = () => {
   const isEmpty =
     category && debouncedKeyword.length >= 2 && filteredResults.length === 0;
 
-  // 검색 결과가 1개이거나, 결과가 여러 개이더라도 모든 결과의 정답이 동일하고 '꽁꽁' 퀴즈일 경우, 답 자동 복사
+  // 검색 결과가 1개이거나, 결과가 여러 개이더라도 모든 결과의 정답이 동일하고 '꽁꽁' 또는 '가로세로' 퀴즈일 경우, 답 자동 복사
   useEffect(() => {
-    if (filteredResults.length > 0 && category === "quiz_kkong") {
+    if (
+      filteredResults.length > 0 &&
+      (category === "quiz_kkong" || category === "quiz_garo")
+    ) {
       const firstAnswer = filteredResults[0].answer;
       // answer가 존재하고, 모든 결과의 answer가 첫 번째 결과의 answer와 동일한지 확인
       if (
